@@ -3,6 +3,7 @@ package curso.java.hibernate;
 import curso.java.hibernate.data.EmployeeRepository;
 import curso.java.hibernate.data.entity.Employee;
 import curso.java.hibernate.data.entity.Task;
+import curso.java.hibernate.data.entity.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +33,14 @@ public class HibernateExampleApp implements CommandLineRunner {
   public void run(String... args) throws Exception
   {
 
-
     Employee emp2 = new Employee();
     emp2.setEmail("new Employee email");
     emp2.setFirstName("Bart");
     emp2.setLastName("Simpson");
 
     emp2.setTasks(getTasks());
-
     repository.save(emp2);
+
     Optional<Employee> emp = repository.findById(2L);
     emp.ifPresent(employee -> logger.info("Employee id 2 -> {}", emp.get()));
 
@@ -53,13 +53,17 @@ public class HibernateExampleApp implements CommandLineRunner {
     Task task1 = new Task();
     task1.setTaskName("report generation");
     task1.setTaskDescription("Daily report generation");
+    task1.setIdScope(1);
+    Scope scope1 = new Scope();
+    scope1.setScopeName("scope for report generation");
+    scope1.setScopeDescription("Scope for daily report generation");
+    task1.getScopes().add(scope1);
     tasks.add(task1);
     Task task2 = new Task();
     task2.setTaskName("view generation");
     task2.setTaskDescription("Daily view generation");
+    task2.setIdScope(2);
     tasks.add(task2);
     return tasks;
   }
-
-
 }

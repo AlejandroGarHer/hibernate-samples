@@ -3,6 +3,8 @@ package curso.java.hibernate.data.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "TBL_TASK")
@@ -18,6 +20,12 @@ public class Task implements Serializable {
     private String taskDescription;
     @Column
     private Integer employeeId;
+    @Column
+    private Integer idScope;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    private Set<Scope> scopes = new HashSet<>();
 
     public Integer getEmployeeId() {
         return employeeId;
@@ -50,6 +58,20 @@ public class Task implements Serializable {
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription;
     }
+    public Integer getIdScope(Integer idScope) {
+        return idScope;
+    }
+
+    public void setIdScope(Integer idScope) {
+        this.idScope = idScope;
+    }
+
+    public Set<Scope> getScopes() {
+        return scopes;
+    }
+    public void setScopes(Set<Scope> scopes) {
+        this.scopes = scopes;
+    }
 
     @Override
     public String toString() {
@@ -57,6 +79,8 @@ public class Task implements Serializable {
                 "id=" + id +
                 ", taskName='" + taskName + '\'' +
                 ", taskDescription='" + taskDescription + '\'' +
+                ", idScope='" + idScope + '\'' +
+                ", scopes='" + scopes + '\'' +
                 '}';
     }
 }
